@@ -6,6 +6,7 @@ using BrainstormSessions.ClientModels;
 using BrainstormSessions.Core.Interfaces;
 using BrainstormSessions.Core.Model;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 
 namespace BrainstormSessions.Api
 {
@@ -43,7 +44,7 @@ namespace BrainstormSessions.Api
         public async Task<IActionResult> Create([FromBody]NewIdeaModel model)
         {
             if (!ModelState.IsValid)
-            {
+            {   
                 return BadRequest(ModelState);
             }
 
@@ -101,6 +102,8 @@ namespace BrainstormSessions.Api
         {
             if (!ModelState.IsValid)
             {
+                // Добавляем логирование уровня Error, когда модель состояния недопустима
+                Log.Error("Invalid model state detected in Create method. ModelState: {@ModelState}", ModelState);
                 return BadRequest(ModelState);
             }
 

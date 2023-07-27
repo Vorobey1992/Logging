@@ -11,11 +11,17 @@ namespace BrainstormSessions
 {
     public class Program
     {
+        private static InMemorySink _sink = new InMemorySink();
+
         public static void Main(string[] args)
         {
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Debug()
                 .WriteTo.File("logs/log.txt", rollingInterval: RollingInterval.Day)
+                .WriteTo.Logger(lc => lc.Filter.ByIncludingOnly(e => e.Level == LogEventLevel.Debug).WriteTo.File("logs/debug.txt", rollingInterval: RollingInterval.Day))
+                .WriteTo.Logger(lc => lc.Filter.ByIncludingOnly(e => e.Level == LogEventLevel.Information).WriteTo.File("logs/info.txt", rollingInterval: RollingInterval.Day))
+                .WriteTo.Logger(lc => lc.Filter.ByIncludingOnly(e => e.Level == LogEventLevel.Debug).WriteTo.InMemory())
+                .WriteTo.Logger(lc => lc.Filter.ByIncludingOnly(e => e.Level == LogEventLevel.Information).WriteTo.InMemory())
                 /*.WriteTo.Email(new EmailConnectionInfo
                 {
                     FromEmail = "sender@example.com",

@@ -48,7 +48,9 @@ namespace BrainstormSessions.Controllers
         public async Task<IActionResult> Index(NewSessionModel model)
         {
             if (!ModelState.IsValid)
-            {
+            {   
+                // Добавляем логирование уровня Warn, когда модель состояния недопустима
+                Log.Warning("Invalid model state detected. ModelState: {@ModelState}", ModelState);
                 return BadRequest(ModelState);
             }
             else

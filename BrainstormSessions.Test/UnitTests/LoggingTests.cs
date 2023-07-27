@@ -23,19 +23,15 @@ namespace BrainstormSessions.Test.UnitTests
     {
         private readonly MemoryAppender _appender;
 
-        //test way
-        private readonly List<LogEvent> _logEvents;
-
         public LoggingTests()
+
         {
             _appender = new MemoryAppender();
             BasicConfigurator.Configure(_appender);
 
-            //test way
-            _logEvents = new List<LogEvent>();
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Debug()
-                .WriteTo.Sink(new TestSink(_logEvents))
+                .WriteTo.Log4Net()
                 .CreateLogger();
         }
 
@@ -57,13 +53,8 @@ namespace BrainstormSessions.Test.UnitTests
             var result = await controller.Index();
 
             // Assert
-            //var logEntries = _appender.GetEvents();
-            //Assert.True(logEntries.Any(l => l.Level == Level.Info), "Expected Info messages in the logs");
-
-
-            //Assert another way
-            Assert.True(_logEvents.Any(logEvent => logEvent.Level == LogEventLevel.Information),
-                "Expected Info messages in the logs");
+            var logEntries = _appender.GetEvents();
+            Assert.True(logEntries.Any(l => l.Level == Level.Info), "Expected Info messages in the logs");
         }
 
         [Fact]
@@ -139,21 +130,5 @@ namespace BrainstormSessions.Test.UnitTests
             };
             return sessions;
         }
-
-        private class TestSink : ILogEventSink
-        {
-            private readonly List<LogEvent> _logEvents;
-
-            public TestSink(List<LogEvent> logEvents)
-            {
-                _logEvents = logEvents;
-            }
-
-            public void Emit(LogEvent logEvent)
-            {
-                _logEvents.Add(logEvent);
-            }
-        }
-
     }
 }
