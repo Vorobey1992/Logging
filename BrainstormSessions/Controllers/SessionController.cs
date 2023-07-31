@@ -16,13 +16,7 @@ namespace BrainstormSessions.Controllers
         }
 
         public async Task<IActionResult> Index(int? id)
-        {   
-            // Создаем новый экземпляр логгера с контекстом id
-            var logger = Log.ForContext("Id", id);
-
-            // Логирование уровня Debug для отслеживания выполнения метода и его параметров
-            logger.Debug("Executing Index action");
-
+        {  
             if (!id.HasValue)
             {
                 return RedirectToAction(actionName: nameof(Index),

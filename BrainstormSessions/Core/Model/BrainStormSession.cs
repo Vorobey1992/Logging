@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Serilog;
+using System;
 using System.Collections.Generic;
 
 namespace BrainstormSessions.Core.Model
@@ -10,6 +11,12 @@ namespace BrainstormSessions.Core.Model
         public DateTimeOffset DateCreated { get; set; }
 
         public List<Idea> Ideas { get; } = new List<Idea>();
+
+        public BrainstormSession()
+        {
+            // Логирование уровня Debug для отслеживания создания экземпляров класса
+            Log.Debug($"Created BrainstormSession with Id: {Id}, Name: {Name}, DateCreated: {DateCreated}");
+        }
 
         public void AddIdea(Idea idea)
         {

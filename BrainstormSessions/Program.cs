@@ -11,8 +11,6 @@ namespace BrainstormSessions
 {
     public class Program
     {
-        private static InMemorySink _sink = new InMemorySink();
-
         public static void Main(string[] args)
         {
             Log.Logger = new LoggerConfiguration()
